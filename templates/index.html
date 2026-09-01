@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clothing Classifier</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+        img { max-width: 300px; margin-top: 15px; }
+        .result { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; }
+        table { margin-top: 10px; border-collapse: collapse; }
+        td, th { padding: 6px 12px; border: 1px solid #ccc; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Clothing Image Classifier</h1>
+    <p>Upload an image and the model will predict its clothing category.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if image_path %}
+        <img src="{{ image_path }}" alt="Uploaded image">
+    {% endif %}
+
+    {% if prediction %}
+    <div class="result">
+        <h3>Prediction: {{ prediction }}</h3>
+        <p>Confidence: {{ "%.2f"|format(confidence) }}%</p>
+
+        <h4>Top-3 Predictions</h4>
+        <table>
+            <tr><th>Class</th><th>Confidence</th></tr>
+            {% for cls, conf in top3 %}
+            <tr><td>{{ cls }}</td><td>{{ "%.2f"|format(conf) }}%</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</body>
+</html>
